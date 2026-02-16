@@ -1,0 +1,19 @@
+// Possible expense categories
+export type Category = 
+| 'Food'
+| 'Transport'
+| 'Shopping'
+| 'Bills'
+| 'Entertainment'
+| 'Healthcare'
+| 'Other';
+
+// Main expense interface
+export interface Expense {
+    id: string;
+    amount: number;
+    category: Category;
+    description?: string;
+    date: Date;
+    createdAt: Date;
+}
