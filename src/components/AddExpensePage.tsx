@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useExpense } from '../hooks/useExpenses';
 import type { Category } from '../types';
+import toast from 'react-hot-toast';
 
 interface ExpenseFormData {
   amount: number;
@@ -15,6 +16,7 @@ export function AddExpensePage() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<ExpenseFormData>({
     defaultValues: {
       date: new Date().toISOString().split('T')[0], // Today's date
@@ -25,20 +27,45 @@ export function AddExpensePage() {
   const navigate = useNavigate();
 
   const onSubmit = async (data: ExpenseFormData) => {
-    await add({
-      amount: data.amount,
-      category: data.category,
-      date: new Date(data.date),
-      description: data.description,
-    });
+    try {
+      await add({
+        amount: data.amount,
+        category: data.category,
+        date: new Date(data.date),
+        description: data.description,
+      });
 
-    // Go back to home page after adding
-    navigate('/');
+      // Show success message
+      toast.success('Expense added successfully!');
+
+      // Reset the form to default values
+      reset({
+        amount: 0,
+        category: '' as Category,
+        date: new Date().toISOString().split('T')[0],
+        description: '',
+      });
+
+      // Optional: Navigate to home (or keep them on the form to add more)
+      // navigate('/');
+    } catch (error) {
+      // Show error message if something goes wrong
+      toast.error('Failed to add expense. Please try again.');
+    }
   };
 
   return (
     <div className="p-4 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-6">Add New Expense</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold">Add New Expense</h2>
+        <button
+          type="button"
+          onClick={() => navigate('/')}
+          className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+        >
+          View All →
+        </button>
+      </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Amount Field */}
