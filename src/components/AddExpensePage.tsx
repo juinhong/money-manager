@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useExpense } from '../hooks/useExpenses';
 import type { Category } from '../types';
 import toast from 'react-hot-toast';
+import { CATEGORIES } from '../utils/categories';
 
 interface ExpenseFormData {
   amount: number;
@@ -88,6 +89,7 @@ export function AddExpensePage() {
           )}
         </div>
         {/* Category Field */}
+        {/* Category Field */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Category *
@@ -97,13 +99,11 @@ export function AddExpensePage() {
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">Select a category</option>
-            <option value="Food">🍔 Food</option>
-            <option value="Transport">🚗 Transport</option>
-            <option value="Shopping">🛍️ Shopping</option>
-            <option value="Bills">💡 Bills</option>
-            <option value="Entertainment">🎬 Entertainment</option>
-            <option value="Healthcare">🏥 Healthcare</option>
-            <option value="Other">📦 Other</option>
+            {CATEGORIES.map((cat) => (
+              <option key={cat.name} value={cat.name}>
+                {cat.icon} {cat.name}
+              </option>
+            ))}
           </select>
           {errors.category && (
             <p className="text-red-500 text-sm mt-1">

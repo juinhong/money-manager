@@ -16,3 +16,9 @@ export interface Expense {
   date: Date;
   createdAt: Date;
 }
+
+export interface CategoryConfig {
+  name: Category;
+  icon: string;
+  color: string;
+}
